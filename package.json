@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "npx babel-node src/test.js",
-    "start": "npx babel-node src/server.js"
+    "teardownDb": "yarn knex migrate:rollback",
+    "setupDb": "yarn knex migrate:latest",
+    "start": "npx babel-node src/server.js",
+    "srcTest": "npx babel-node src/test.js",
+    "test": "npx babel-node test/8a.test.js",
+    "listAreas": "npx babel-node devtools/listAreas.js",
+    "getClimb": "npx babel-node devtools/getClimb.js",
+    "scrapeArea": "npx babel-node devtools/scrapeArea.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +24,10 @@
     "core-js": "^3.8.3",
     "csv-parse": "^4.15.1",
     "express": "^4.17.1",
-    "lodash": "^4.17.20"
+    "knex": "^0.21.17",
+    "lodash": "^4.17.20",
+    "pg": "^8.5.1",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.16",

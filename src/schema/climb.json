@@ -1,0 +1,33 @@
+{
+  "id": "string",
+  "name": "string",
+  "type": "string",
+  "sources": {
+    "sourceIdMountainProject": "string",
+    "sourceId8a": "string"
+  },
+  "suggestedGrades": [
+    "number"
+  ],
+  "starRatings": [
+    "number"
+  ],
+  "avgStarRating": "number",
+  "grade": {
+    "value": "number",
+    "index": "number",
+    "vGrade": "string",
+    "fontGrade": "string",
+    "soft": "boolean",
+    "hard": "boolean",
+    "statistics": {
+      "mean": "number",
+      "median": "number",
+      "distribution": {
+        "[gradeIndexValue]": "number"
+      },
+      "stdDev": "number",
+      "count": "number"
+    }
+  }
+}

@@ -1,12 +1,13 @@
-import {scrapeArea as scrape8a} from 'lib/scrapers/8a';
-import {scrapeArea as scrapeMP} from 'lib/scrapers/mountainProject';
+import {scrapeArea, getAreaList, getSubAreas, getStates, scrapeState} from 'lib/mountainProject/scraper';
+import {saveDataDb, getDataDynamo, saveDataDynamo} from 'utils/db';
+import knex from 'utils/knex';
+import gradeConverter, {getGradeByIndexValue} from 'lib/gradeConverter';
 
 (async function() {
-  // const areaSlug = 'clear-creek-canyon-co';
-  // const areaSlug = 'moe-s-valley-ut';
-  // await scrape8a(areaSlug, {save: true});
+  await scrapeArea('105744225', {save: true});
 
-  // const areaId = '106028834'; // moes
-  const areaId = '105744243'; // ccc
-  await scrapeMP(areaId, {save: true});
+  // console.log(getGradeByIndexValue(gradeConverter('v8')));
+
+  // console.log(await getDataDynamo());
+  // console.log(await saveDataDynamo({id: '123456345345', name: 'a', otherField: 'b'}));
 })();

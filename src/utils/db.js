@@ -1,20 +1,48 @@
 import _ from 'lodash';
+import Promise from 'bluebird';
 import fs from 'fs';
-import cccMp from '../../data/mountainProject/105744243.json';
-import ccc8a from '../../data/8a/clear-creek-canyon-co.json';
+import getLogger from './log';
+import request from './request';
+import knex from './knex'
+const log = getLogger();
 
-// TODO: implement some sort of DB instead of fs
+const DB = process.env.DB || 'local';
+const DYNAMO_DB_API_BASE_URL = process.env.DYNAMO_DB_API_BASE_URL;
 
-export function saveDataLocal(filepath, data) {
-  fs.writeFileSync(filepath + '.json', JSON.stringify(data, null, 2), 'utf8');
+async function saveDataDb(table, input) {
+  const picked = _.pick(input, 'id', 'name', 'type');
+  picked.raw = JSON.stringify(input);
+  const existing = await knex(table)
+    .where({id: input.id})
+    .select();
+  if (existing.length) {
+    return knex(table)
+      .where({id: input.id})
+      .update(picked);
+  }
+
+  return knex(table).insert(picked);
 }
 
-export function searchByName(query) {
-  const boulderResultsMp = _.filter(cccMp.boulder, {Route: query});
-  const sportResultsMp = _.filter(cccMp.sport, {Route: query});
+export async function getDataDynamo() {
+  const URL = `${DYNAMO_DB_API_BASE_URL}/items`;
+  const resp = await request(URL);
+  return resp.data;
+}
 
-  const boulderResults8a = _.filter(ccc8a.boulder, {zlaggableName: query});
-  const sportResults8a = _.filter(ccc8a.sport, {zlaggableName: query});
+async function saveDataDynamo(data) {
+  const URL = `${DYNAMO_DB_API_BASE_URL}/items`;
+  const resp = await request(URL, {method: 'PUT', data});
+  if (resp.status !== 200) {
+    log.error('saveDataDynamo err: ' + JSON.stringify(resp.data));
+  }
+  return resp.data;
+}
 
-  return _.flatten([boulderResults8a, boulderResultsMp, sportResults8a, sportResultsMp]);
+export async function saveData({table, data}) {
+  if (DB === 'dynamo' && DYNAMO_DB_API_BASE_URL) {
+    return saveDataDynamo(data);
+  } else if (DB === 'local') {
+    return saveDataDb(table, data);
+  }
 }
