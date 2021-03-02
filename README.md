@@ -1,3 +1,8 @@
+#### Required setup
+Install homebrew: https://brew.sh/
+`brew install node`
+`npm install -g yarn`
+
 #### To get started locally:
 `yarn` to install deps
 
