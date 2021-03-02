@@ -10,11 +10,12 @@ const DB = process.env.DB || 'local';
 const DYNAMO_DB_API_BASE_URL = process.env.DYNAMO_DB_API_BASE_URL;
 
 async function saveDataDb(table, input) {
-  const picked = _.pick(input, 'id', 'name', 'type');
+  const picked = _.pick(input, 'id', 'name', 'type', 'source');
   picked.raw = JSON.stringify(input);
   const existing = await knex(table)
     .where({id: input.id})
     .select();
+
   if (existing.length) {
     return knex(table)
       .where({id: input.id})
@@ -39,7 +40,7 @@ async function saveDataDynamo(data) {
   return resp.data;
 }
 
-export async function saveData({table, data}) {
+export function saveData({table, data}) {
   if (DB === 'dynamo' && DYNAMO_DB_API_BASE_URL) {
     return saveDataDynamo(data);
   } else if (DB === 'local') {

@@ -11,6 +11,6 @@ const log = getLogger('devtools');
     process.exit(1);
   }
 
-  await scrapeArea(args[0]);
+  await scrapeArea(args[0], {save: true});
   process.exit();
 })();
