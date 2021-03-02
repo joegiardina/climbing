@@ -4,15 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx babel-node src/test.js",
     "teardownDb": "yarn knex migrate:rollback",
     "setupDb": "yarn knex migrate:latest",
-    "start": "npx babel-node src/server.js",
-    "srcTest": "npx babel-node src/test.js",
-    "test": "npx babel-node test/8a.test.js",
-    "listAreas": "npx babel-node devtools/listAreas.js",
-    "getClimb": "npx babel-node devtools/getClimb.js",
-    "scrapeArea": "npx babel-node devtools/scrapeArea.js"
+    "start": "env $(cat .env) npx babel-node src/server.js",
+    "test": "env $(cat .env) npx babel-node src/test.js",
+    "listAreas": "env $(cat .env) npx babel-node devtools/listAreas.js",
+    "getClimb": "env $(cat .env) npx babel-node devtools/getClimb.js",
+    "scrapeArea": "env $(cat .env) npx babel-node devtools/scrapeArea.js"
   },
   "author": "",
   "license": "ISC",

@@ -4,7 +4,7 @@ import knex from 'utils/knex';
 import gradeConverter, {getGradeByIndexValue} from 'lib/gradeConverter';
 
 (async function() {
-  await scrapeArea('105744225', {save: true});
+  // await scrapeArea('105744225', {save: true});
 
   // console.log(getGradeByIndexValue(gradeConverter('v8')));
 
